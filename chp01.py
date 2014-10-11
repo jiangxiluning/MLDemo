@@ -20,6 +20,24 @@ fp1, res, rank, sv, rcond= sp.polyfit(x,y,1,full=True)
 f1 = sp.poly1d(fp1)
 print error(f1,x,y)
 
+inflection = 3.5*7*24
+xa=x[:inflection]
+ya=y[:inflection]
+xb=x[inflection:]
+yb=y[inflection:]
+
+fa=sp.poly1d(sp.polyfit(xa,ya,True))
+fb=sp.poly1d(sp.polyfit(xb,yb,1))
+
+fa_error=error(fa,xa,ya)
+fb_error=error(fb,xb,yb)
+
+print('Error inflection=%f'% (fa_error+fb_error))
+
+
+fbt2=sp.polyfit(x,y,2)
+print fbt2
+
 
 import matplotlib.pyplot as plt
 plt.scatter(x,y)
@@ -29,8 +47,10 @@ plt.ylabel("Hits/hour")
 plt.xticks([w*7*24 for w in range((10))],['week %i'%w for w in range(10) ])
 plt.autoscale(tight=True)
 
-fx = sp.linspace(0,x[-1],1000)
-plt.plot(fx,f1(fx),linewidth=4)
-plt.legend(['dim=%i'% f1.order],loc="upper left")
+fx_a = sp.linspace(0,x[inflection],1000)
+fx_b = sp.linspace(x[inflection],x[-1],1000)
+plt.plot(fx_a,fa(fx_a),'r-',linewidth=4)
+plt.plot(fx_b,fb(fx_b),'g-',linewidth=4)
+plt.legend(['dim=%i'% fa.order,'dim=%i'% fb.order],loc="upper left")
 plt.grid()
 plt.show()
