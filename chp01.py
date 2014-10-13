@@ -1,6 +1,6 @@
 __author__ = 'ninglu'
 import scipy as sp
-data = sp.genfromtxt("web_traffic.tsv",delimiter="\t")
+data = sp.genfromtxt(r"data/ch01/web_traffic.tsv",delimiter="\t")
 print(data.shape)
 
 x = data[:,0]
