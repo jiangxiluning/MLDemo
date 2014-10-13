@@ -2,17 +2,28 @@ __author__ = 'ninglu'
 import os,sys
 import scipy as sp
 from sklearn.feature_extraction.text import CountVectorizer
-vectorizer = CountVectorizer(min_df=1)
+import nltk.stem
+english_stemmer = nltk.stem.SnowballStemmer('english')
+
+class StemmedCountVectorizer(CountVectorizer):
+    def build_analyzer(self):
+        analyzer = super(StemmedCountVectorizer,self).build_analyzer()
+        return lambda doc : (english_stemmer.stem(w) for w in analyzer(doc))
+
+vectorizer = StemmedCountVectorizer(min_df=1,stop_words='english')
 # content = ["How to format my hard disk", " Hard disk format problems "]
 # X = vectorizer.fit_transform(content)
 # vectorizer.get_feature_names()
+print sorted(vectorizer.get_stop_words())
 
 posts = [open(os.path.join('data/ch03/toy',f)).read() for f in os.listdir('data/ch03/toy')]
 X_train = vectorizer.fit_transform(posts)
+
+print len(vectorizer.get_feature_names())
 num_samples, num_features = X_train.shape
 
-print('#samples:%d #feature:%d' % (num_samples,num_features))
-print vectorizer.get_feature_names()
+#print('#samples:%d #feature:%d' % (num_samples,num_features))
+#print vectorizer.get_feature_names()
 new_post = "imaging database"
 new_post_vec = vectorizer.transform([new_post])
 
