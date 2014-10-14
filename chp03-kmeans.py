@@ -45,6 +45,13 @@ I tried to format it, but now it doesn't boot any more.\
 Any ideas? Thanks."
 
 new_post_vec = vectorizer.transform([new_post])
-new_post_lable = km.predict(new_post_vec)[0]
+new_post_label = km.predict(new_post_vec)[0]
+similar_indices = (km.labels_==new_post_label).nonzero()[0]
 
-print km.labels_
+import scipy as sp
+similar = []
+for i in similar_indices:
+    dist = sp.linalg.norm((new_post_vec - vectorized[i]).toarray())
+    similar.append((dist, train_data.data[i]))
+similar = sorted(similar)
+print(len(similar))
