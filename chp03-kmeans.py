@@ -6,8 +6,8 @@ print(data.filenames)
 print(len(data.filenames))
 print data.target_names
 
-groups = ['comp.graphics', 'comp.os.ms-windows.misc', 'comp.sys. \
-ibm.pc.hardware', 'comp.sys.mac.hardware', 'comp.windows.x', 'sci. \
+groups = ['comp.graphics', 'comp.os.ms-windows.misc', 'comp.sys.\
+ibm.pc.hardware', 'comp.sys.mac.hardware', 'comp.windows.x', 'sci.\
 space']
 
 train_data = sklearn.datasets.load_mlcomp("20news-18828","train",mlcomp_root=MLCOMP_DIR, categories=groups)
